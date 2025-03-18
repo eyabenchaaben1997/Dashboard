@@ -949,7 +949,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            console.log("✅ Page Loaded");
+            console.log(" Page Loaded");
 
             const dropArea = document.querySelector(".drag-drop");
             const fileInput = document.getElementById("file-input");
@@ -958,7 +958,7 @@
 
             let fileUploaded = false;
 
-            /** ✅ Task & Problem Definition Data **/
+
             const taskCategories = {
                 "Multimodal": ["Audio-Text-to-Text", "Image-Text-to-Text", "Visual Question Answering"],
                 "Computer Vision": ["Image Classification", "Object Detection", "Image Segmentation"],
@@ -974,7 +974,7 @@
                 "Scikit-learn", "speechbrain", "PaddlePaddle", "Fairseq"
             ];
 
-            /** ✅ Populate Task Dropdown **/
+
             function populateTaskDropdown() {
                 const taskSelect = document.getElementById("task-select");
                 taskSelect.innerHTML = '<option value="">Select a Task</option>';
@@ -991,10 +991,10 @@
                     checkFormCompletion();
                 });
 
-                console.log("✅ Task dropdown populated!");
+                console.log(" Task dropdown populated!");
             }
 
-            /** ✅ Populate Problem Dropdown **/
+
             function populateProblemDropdown(selectedTask) {
                 const problemSelect = document.getElementById("problem-select");
                 problemSelect.innerHTML = '<option value="">Select a Problem Definition</option>';
@@ -1011,7 +1011,7 @@
                 problemSelect.addEventListener("change", checkFormCompletion);
             }
 
-            /** ✅ Populate Library Dropdown **/
+
             function populateLibraryDropdown() {
                 const librarySelect = document.getElementById("library-select");
                 librarySelect.innerHTML = '<option value="">Select a Library</option>';
@@ -1024,10 +1024,10 @@
                 });
 
                 librarySelect.addEventListener("change", checkFormCompletion);
-                console.log("✅ Library dropdown populated!");
+                console.log(" Library dropdown populated!");
             }
 
-            /** ✅ Handle File Upload & Display Data **/
+
             function handleFileUpload() {
                 function preventDefaults(e) {
                     e.preventDefault();
@@ -1080,7 +1080,7 @@
                 });
             }
 
-            /** ✅ Display Uploaded Data **/
+
             function displayCSVData(csv) {
                 const rows = csv.trim().split("\n").map(row => row.split(","));
                 const tableHeader = document.getElementById("table-header");
@@ -1106,11 +1106,11 @@
                         tableBody.appendChild(tr);
                     });
 
-                    console.log("✅ CSV Data Displayed!");
+                    console.log(" CSV Data Displayed!");
                 }
             }
 
-            /** ✅ Enable Submit Button **/
+
             function checkFormCompletion() {
                 const task = document.getElementById("task-select").value;
                 const problem = document.getElementById("problem-select").value;
@@ -1127,7 +1127,7 @@
                 }
             }
 
-            /** ✅ Fetch Best Models from Hugging Face **/
+
             function fetchFilteredHuggingFaceModels(task, problem, library) {
                 console.log("🔍 Fetching models for:", task, problem, library);
 
@@ -1136,7 +1136,7 @@
                 fetch(apiUrl)
                     .then(response => response.json())
                     .then(models => {
-                        console.log("✅ Hugging Face Models Found:", models);
+                        console.log(" Hugging Face Models Found:", models);
 
                         const filteredModels = models
                             .filter(model => model.tags && model.tags.includes(library))
@@ -1150,10 +1150,10 @@
 
                         updateResultedModelUI(filteredModels);
                     })
-                    .catch(error => console.error("❌ Error fetching Hugging Face models:", error));
+                    .catch(error => console.error(" Error fetching Hugging Face models:", error));
             }
 
-            /** ✅ Display Suggested Models **/
+
             function updateResultedModelUI(models) {
                 resultContainer.innerHTML = `<h3>Recommended Models</h3>`;
                 if (models.length === 0) {
