@@ -273,7 +273,7 @@
             font-style: italic;
         }
 
-       .inferior-grid {
+        .inferior-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-gap: 20px;
@@ -382,6 +382,7 @@
             justify-content: center;
             z-index: 10;
         }
+
         .diagram {
             display: flex;
             align-items: center;
@@ -659,6 +660,38 @@
                 <button id="submit-btn" disabled>Submit</button>
             </div>
 
+            <div id="refresh-results" class="hidden">
+                <button class="results-button">Refresh Results</button>
+            </div>
+
+            <select id="refresh-results-specific" class="hidden">
+                <option value="">Refresh node...</option>
+                <option value="ALL">ALL</option>
+                <option value="APP_REQUIREMENTS">APP_REQUIREMENTS</option>
+                <option value="CARBON_FOOTPRINT">CARBON_FOOTPRINT</option>
+                <option value="HW_CONSTRAINTS">HW_CONSTRAINTS</option>
+                <option value="HW_RESOURCES">HW_RESOURCES</option>
+                <option value="ML_MODEL_METADATA">ML_MODEL_METADATA</option>
+                <option value="ML_MODEL">ML_MODEL</option>
+                <option value="ORCHESTRATOR">ORCHESTRATOR</option>
+            </select>
+
+            <select id="request-datas">
+                <option value="">Request for...</option>
+                <option value="Modalities">Modalities</option>
+                <option value="Problems_from_modality">Problems_from_modality</option>
+                <option value="Model_info">Model_info</option>
+                <option value="Input_output_modalities">Input_output_modalities</option>
+                <option value="Metrics_from_modalities">Metrics_from_modalities</option>
+                <option value="Metrics_from_problem">Metrics_from_problem</option>
+                <option value="All_metrics">All_metrics</option>
+                <option value="Hardwares">Hardwares</option>
+            </select>
+
+            <div id="framework-results" class="hidden">
+                <!-- JSON data will be displayed here -->
+            </div>
+
             <div id="resulted-model" class="result-box hidden">
                 <h3>Resulted Model</h3>
                 <p><strong>Model Name:</strong> <span id="model-name">-</span></p>
@@ -668,6 +701,11 @@
                 <p><strong>Programming Language:</strong> <span id="model-language">-</span></p>
                 <button id="download-model">Download Model</button>
             </div>
+
+            <div id="node-status" class="hidden">
+                <!-- JSON data will be displayed here -->
+            </div>
+
         </div>
 
 
@@ -681,235 +719,235 @@
             </div>
         </div>
 
-           <div class="inferior-grid">
-        <!--  Geo Location et Hardware Availability -->
-        <div class="geo-hardware grid-item" id="geo-location">
-            <!-- Geo Location -->
-            <h3>Geo Location</h3>
-            <div class="geo-list">
-                <div class="option">
-                    <label>Your location</label>
-                     <select id="country-select">
-                        <option value="">Select a country</option>
-                        <option value="Afghanistan">Afghanistan</option>
-                        <option value="Albania">Albania</option>
-                        <option value="Algeria">Algeria</option>
-                        <option value="Andorra">Andorra</option>
-                        <option value="Angola">Angola</option>
-                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                        <option value="Argentina">Argentina</option>
-                        <option value="Armenia">Armenia</option>
-                        <option value="Australia">Australia</option>
-                        <option value="Austria">Austria</option>
-                        <option value="Azerbaijan">Azerbaijan</option>
-                        <option value="Bahamas">Bahamas</option>
-                        <option value="Bahrain">Bahrain</option>
-                        <option value="Bangladesh">Bangladesh</option>
-                        <option value="Barbados">Barbados</option>
-                        <option value="Belarus">Belarus</option>
-                        <option value="Belgium">Belgium</option>
-                        <option value="Belize">Belize</option>
-                        <option value="Benin">Benin</option>
-                        <option value="Bhutan">Bhutan</option>
-                        <option value="Bolivia">Bolivia</option>
-                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                        <option value="Botswana">Botswana</option>
-                        <option value="Brazil">Brazil</option>
-                        <option value="Brunei">Brunei</option>
-                        <option value="Bulgaria">Bulgaria</option>
-                        <option value="Burkina Faso">Burkina Faso</option>
-                        <option value="Burundi">Burundi</option>
-                        <option value="Cabo Verde">Cabo Verde</option>
-                        <option value="Cambodia">Cambodia</option>
-                        <option value="Cameroon">Cameroon</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Central African Republic">Central African Republic</option>
-                        <option value="Chad">Chad</option>
-                        <option value="Chile">Chile</option>
-                        <option value="China">China</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Comoros">Comoros</option>
-                        <option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
-                        <option value="Costa Rica">Costa Rica</option>
-                        <option value="Croatia">Croatia</option>
-                        <option value="Cuba">Cuba</option>
-                        <option value="Cyprus">Cyprus</option>
-                        <option value="Czech Republic">Czech Republic</option>
-                        <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
-                        <option value="Denmark">Denmark</option>
-                        <option value="Djibouti">Djibouti</option>
-                        <option value="Dominica">Dominica</option>
-                        <option value="Dominican Republic">Dominican Republic</option>
-                        <option value="Ecuador">Ecuador</option>
-                        <option value="Egypt">Egypt</option>
-                        <option value="El Salvador">El Salvador</option>
-                        <option value="Equatorial Guinea">Equatorial Guinea</option>
-                        <option value="Eritrea">Eritrea</option>
-                        <option value="Estonia">Estonia</option>
-                        <option value="Eswatini">Eswatini</option>
-                        <option value="Ethiopia">Ethiopia</option>
-                        <option value="Fiji">Fiji</option>
-                        <option value="Finland">Finland</option>
-                        <option value="France">France</option>
-                        <option value="Gabon">Gabon</option>
-                        <option value="Gambia">Gambia</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Germany">Germany</option>
-                        <option value="Ghana">Ghana</option>
-                        <option value="Greece">Greece</option>
-                        <option value="Grenada">Grenada</option>
-                        <option value="Guatemala">Guatemala</option>
-                        <option value="Guinea">Guinea</option>
-                        <option value="Guinea-Bissau">Guinea-Bissau</option>
-                        <option value="Guyana">Guyana</option>
-                        <option value="Haiti">Haiti</option>
-                        <option value="Honduras">Honduras</option>
-                        <option value="Hungary">Hungary</option>
-                        <option value="Iceland">Iceland</option>
-                        <option value="India">India</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Iran">Iran</option>
-                        <option value="Iraq">Iraq</option>
-                        <option value="Ireland">Ireland</option>
-                        <option value="Israel">Israel</option>
-                        <option value="Italy">Italy</option>
-                        <option value="Jamaica">Jamaica</option>
-                        <option value="Japan">Japan</option>
-                        <option value="Jordan">Jordan</option>
-                        <option value="Kazakhstan">Kazakhstan</option>
-                        <option value="Kenya">Kenya</option>
-                        <option value="Kuwait">Kuwait</option>
-                        <option value="Kyrgyzstan">Kyrgyzstan</option>
-                        <option value="Laos">Laos</option>
-                        <option value="Latvia">Latvia</option>
-                        <option value="Lebanon">Lebanon</option>
-                        <option value="Lesotho">Lesotho</option>
-                        <option value="Liberia">Liberia</option>
-                        <option value="Libya">Libya</option>
-                        <option value="Lithuania">Lithuania</option>
-                        <option value="Luxembourg">Luxembourg</option>
-                        <option value="Madagascar">Madagascar</option>
-                        <option value="Malawi">Malawi</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Maldives">Maldives</option>
-                        <option value="Mali">Mali</option>
-                        <option value="Malta">Malta</option>
-                        <option value="Mexico">Mexico</option>
-                        <option value="Moldova">Moldova</option>
-                        <option value="Monaco">Monaco</option>
-                        <option value="Mongolia">Mongolia</option>
-                        <option value="Montenegro">Montenegro</option>
-                        <option value="Morocco">Morocco</option>
-                        <option value="Mozambique">Mozambique</option>
-                        <option value="Myanmar">Myanmar</option>
-                        <option value="Namibia">Namibia</option>
-                        <option value="Nepal">Nepal</option>
-                        <option value="Netherlands">Netherlands</option>
-                        <option value="New Zealand">New Zealand</option>
-                        <option value="Nicaragua">Nicaragua</option>
-                        <option value="Nigeria">Nigeria</option>
-                        <option value="North Korea">North Korea</option>
-                        <option value="Norway">Norway</option>
-                        <option value="Pakistan">Pakistan</option>
-                        <option value="Palestine">Palestine</option>
-                        <option value="Panama">Panama</option>
-                        <option value="Peru">Peru</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Poland">Poland</option>
-                        <option value="Portugal">Portugal</option>
-                        <option value="Qatar">Qatar</option>
-                        <option value="Romania">Romania</option>
-                        <option value="Russia">Russia</option>
-                        <option value="Saudi Arabia">Saudi Arabia</option>
-                        <option value="South Africa">South Africa</option>
-                        <option value="Spain">Spain</option>
-                        <option value="United States">United States</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="Vietnam">Vietnam</option>
-                        <option value="Zimbabwe">Zimbabwe</option>
-                    </select>
-                                </div>
-                <div class="option">
-                    <label>Is the environment cloud-based or local</label>
-                    <select>
-                        <option>Local</option>
-                        <option>Cloud</option>
-                    </select>
-                </div>
-                <div class="option">
-                    <label>Are you open for using cloud-based service</label>
-                    <select>
-                        <option>Yes</option>
-                        <option>No</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Hardware Availability -->
-            <div class="geo-hardware grid-item" id="hardware">
-                <h3>Hardware Availability</h3>
-                <div class="hardware-list">
+        <div class="inferior-grid">
+            <!--  Geo Location et Hardware Availability -->
+            <div class="geo-hardware grid-item" id="geo-location">
+                <!-- Geo Location -->
+                <h3>Geo Location</h3>
+                <div class="geo-list">
                     <div class="option">
-                        <label>Hardware</label>
-                        <select>
-                            <option>GPU</option>
-                            <option>CPU</option>
-                            <option>TPU</option>
+                        <label>Your location</label>
+                        <select id="country-select">
+                            <option value="">Select a country</option>
+                            <option value="Afghanistan">Afghanistan</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="Andorra">Andorra</option>
+                            <option value="Angola">Angola</option>
+                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Armenia">Armenia</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Azerbaijan">Azerbaijan</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Belize">Belize</option>
+                            <option value="Benin">Benin</option>
+                            <option value="Bhutan">Bhutan</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="Brunei">Brunei</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Burkina Faso">Burkina Faso</option>
+                            <option value="Burundi">Burundi</option>
+                            <option value="Cabo Verde">Cabo Verde</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Central African Republic">Central African Republic</option>
+                            <option value="Chad">Chad</option>
+                            <option value="Chile">Chile</option>
+                            <option value="China">China</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Comoros">Comoros</option>
+                            <option value="Congo (Congo-Brazzaville)">Congo (Congo-Brazzaville)</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Cuba">Cuba</option>
+                            <option value="Cyprus">Cyprus</option>
+                            <option value="Czech Republic">Czech Republic</option>
+                            <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Dominica">Dominica</option>
+                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="Ecuador">Ecuador</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Equatorial Guinea">Equatorial Guinea</option>
+                            <option value="Eritrea">Eritrea</option>
+                            <option value="Estonia">Estonia</option>
+                            <option value="Eswatini">Eswatini</option>
+                            <option value="Ethiopia">Ethiopia</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="Finland">Finland</option>
+                            <option value="France">France</option>
+                            <option value="Gabon">Gabon</option>
+                            <option value="Gambia">Gambia</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Grenada">Grenada</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guinea">Guinea</option>
+                            <option value="Guinea-Bissau">Guinea-Bissau</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Haiti">Haiti</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Iran">Iran</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Lesotho">Lesotho</option>
+                            <option value="Liberia">Liberia</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Madagascar">Madagascar</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Maldives">Maldives</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Moldova">Moldova</option>
+                            <option value="Monaco">Monaco</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Montenegro">Montenegro</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Myanmar">Myanmar</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="North Korea">North Korea</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Palestine">Palestine</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Spain">Spain</option>
+                            <option value="United States">United States</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
                         </select>
                     </div>
                     <div class="option">
-                        <label>Memory and storage capacity</label>
+                        <label>Is the environment cloud-based or local</label>
                         <select>
-                            <option>I know</option>
-                            <option>I don't know</option>
+                            <option>Local</option>
+                            <option>Cloud</option>
                         </select>
                     </div>
                     <div class="option">
-                        <label>Are there any limitations on runtime or resources</label>
+                        <label>Are you open for using cloud-based service</label>
                         <select>
                             <option>Yes</option>
                             <option>No</option>
                         </select>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!--  Goal and Domain -->
-        <div class="goal-domain grid-item" id="goal-domain">
-            <h3>Goal and Domain</h3>
-            <div class="goal-list">
-                <div class="option">
-                    <label>Data Modality</label>
-                    <select>
-                        <option>Image/Video</option>
-                        <option>Text</option>
-                        <option>Sensor</option>
-                    </select>
-                </div>
-                <div class="option">
-                    <div class="tooltip">
-                        <label for="task-select">Task:</label>
-                        <span class="tooltip-text">Choose the primary task you want to perform</span>
+                <!-- Hardware Availability -->
+                <div class="geo-hardware grid-item" id="hardware">
+                    <h3>Hardware Availability</h3>
+                    <div class="hardware-list">
+                        <div class="option">
+                            <label>Hardware</label>
+                            <select>
+                                <option>GPU</option>
+                                <option>CPU</option>
+                                <option>TPU</option>
+                            </select>
+                        </div>
+                        <div class="option">
+                            <label>Memory and storage capacity</label>
+                            <select>
+                                <option>I know</option>
+                                <option>I don't know</option>
+                            </select>
+                        </div>
+                        <div class="option">
+                            <label>Are there any limitations on runtime or resources</label>
+                            <select>
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                        </div>
                     </div>
-                    <select id="task-select">
-                        <option value="">Select a Task</option>
-                    </select>
-                </div>
-                <div class="option">
-                    <div class="tooltip">
-                        <label for="problem-select">Problem Definition:</label>
-                        <span class="tooltip-text">Select the specific problem related to the task</span>
-                    </div>
-                    <select id="problem-select">
-                        <option value="">Select a Problem Definition</option>
-                    </select>
                 </div>
             </div>
 
+            <!--  Goal and Domain -->
+            <div class="goal-domain grid-item" id="goal-domain">
+                <h3>Goal and Domain</h3>
+                <div class="goal-list">
+                    <div class="option">
+                        <label>Data Modality</label>
+                        <select>
+                            <option>Image/Video</option>
+                            <option>Text</option>
+                            <option>Sensor</option>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <div class="tooltip">
+                            <label for="task-select">Task:</label>
+                            <span class="tooltip-text">Choose the primary task you want to perform</span>
+                        </div>
+                        <select id="task-select">
+                            <option value="">Select a Task</option>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <div class="tooltip">
+                            <label for="problem-select">Problem Definition:</label>
+                            <span class="tooltip-text">Select the specific problem related to the task</span>
+                        </div>
+                        <select id="problem-select">
+                            <option value="">Select a Problem Definition</option>
+                        </select>
+                    </div>
+                </div>
 
 
-            <div class="goal-domain grid-item" id="optional">
+
+                <div class="goal-domain grid-item" id="optional">
                     <h3>Optional</h3>
                     <div class="optional-list">
                         <div class="option">
@@ -942,7 +980,7 @@
             </div>
 
 
-    </div>
+        </div>
 
 
     </div>
@@ -1116,7 +1154,8 @@
                 const problem = document.getElementById("problem-select").value;
                 const library = document.getElementById("library-select").value;
 
-                if (task && problem && library && fileUploaded) {
+                if (task && problem && library) {                           // I commented this line to test the backend
+                    // if (task && problem && library && fileUploaded) {    // For now fileUploaded should not be mandatory
                     submitButton.disabled = false;
                     submitButton.style.backgroundColor = "#007BFF";
                     submitButton.style.cursor = "pointer";
@@ -1177,13 +1216,381 @@
             populateLibraryDropdown();
             handleFileUpload();
 
-            submitButton.addEventListener("click", function () {
-                fetchFilteredHuggingFaceModels(
-                    document.getElementById("task-select").value,
-                    document.getElementById("problem-select").value,
-                    document.getElementById("library-select").value
-                );
+            submitButton.addEventListener("click", function () {            // I commented fetchFilteredHuggingFaceModels for backend tests to submit the user_input to the backend
+                // fetchFilteredHuggingFaceModels(
+                //    document.getElementById("task-select").value,
+                //     document.getElementById("problem-select").value,
+                //     document.getElementById("library-select").value
+                // );
+
+                console.log("Terminal/ PD send.");
+                // PD use in backend to test connection
+                const problem_short_description = "";
+                const modality2 = "";
+                const problem_definition = "";
+                const ins = [""];
+                const outs = [""];
+                const min_value = 1;
+                const max_value = 1;
+                const optimize_carbon_footprint_auto = false;
+                const optimize_carbon_footprint_manual = false;
+                const previous_iteration = 0;
+                const desired_carbon_footprint = 0.0;
+                const geo_location_continent = "Europe";
+                const geo_location_region = "Spain";
+                const hardware_required = "";
+                const max_memory_footprint = 0;
+                const goal = "text-generation";
+                const previous_problem_id = 0;
+                const num_outputs = 2;
+
+                // Handle the PD data submission (e.g., send it to your server) - Use the test version for the communication with the backend
+                const pdDataTest = {
+                    problem_short_description,
+                    modality2,
+                    problem_definition,
+                    ins,
+                    outs,
+                    min_value,
+                    max_value,
+                    optimize_carbon_footprint_auto,
+                    optimize_carbon_footprint_manual,
+                    previous_iteration,
+                    desired_carbon_footprint,
+                    geo_location_continent,
+                    geo_location_region,
+                    hardware_required,
+                    max_memory_footprint,
+                    goal,
+                    previous_problem_id,
+                    num_outputs
+                };
+
+                console.log('PD Data:', pdDataTest);
+                fetch('/send_pd', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "problem_short_description": problem_short_description,
+                        "modality": modality2,
+                        "problem_definition": problem_definition,
+                        "inputs": ins,
+                        "outputs": outs,
+                        "minimum_samples": min_value,
+                        "maximum_samples": max_value,
+                        "optimize_carbon_footprint_auto": optimize_carbon_footprint_auto,
+                        "optimize_carbon_footprint_manual": optimize_carbon_footprint_manual,
+                        "previous_iteration": previous_iteration,
+                        "desired_carbon_footprint": desired_carbon_footprint,
+                        "geo_location_continent": geo_location_continent,
+                        "geo_location_region": geo_location_region,
+                        "extra_data": {
+                            "hardware_required": hardware_required,
+                            "max_memory_footprint": max_memory_footprint,
+                            "goal": goal,
+                            "previous_problem_id": previous_problem_id,
+                            "num_outputs": num_outputs
+                        }
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Show results
+                        // document.getElementById("refresh-status").style.display = 'block';
+                        document.getElementById("refresh-results").style.display = 'block';
+                        document.getElementById("refresh-results-specific").style.display = 'block';
+                        refreshStatusNode();
+                        refreshResults();
+                    })
+
+                // // PD assume from the UI of this frontend
+                // console.log("Terminal/ PD send.");
+                // const geolocation = "";
+                // const modality = "";
+                // const cloud_based = "";
+                // const open_for_cloud = "";
+                // const hardware = "";
+                // const memory_storage = "";
+                // const limitations = "";
+                // const data_modality = "";
+                // const task = "";
+                // const problem = "";
+                // const domain = "";
+                // const library = "";
+                // const programming_language = "";
+//
+                // // Handle the PD data submission (e.g., send it to your server)
+                // const pdData = {
+                //     geolocation,
+                //     modality,
+                //     cloud_based,
+                //     open_for_cloud,
+                //     hardware,
+                //     memory_storage,
+                //     limitations,
+                //     data_modality,
+                //     task,
+                //     problem,
+                //     domain,
+                //     library,
+                //     programming_language
+                // };
+//
+                // // TODO: Define variable send from tis frontend to eProsima backend for be able to support in backend
+                // console.log('PD Data:', pdData);
+                // fetch('/send_pd', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({
+                //         "geolocation": geolocation,
+                //         "modality": modality,
+                //         "cloud_based": cloud_based,
+                //         "open_for_cloud": open_for_cloud,
+                //         "hardware": hardware,
+                //         "memory_storage": memory_storage,
+                //         "limitations": limitations,
+                //         "data_modality": data_modality,
+                //         "task": task,
+                //         "problem": problem,
+                //         "domain": domain,
+                //         "library": library,
+                //         "programming_language": programming_language
+                //     })
+                // })
+                //     .then(response => response.json())
+                //     .then(data => {
+                //         // Show results
+                //         // document.getElementById("refresh-status").style.display = 'block';
+                //         document.getElementById("refresh-results").style.display = 'block';
+                //         document.getElementById("refresh-results-specific").style.display = 'block';
+                //         refreshStatusNode();
+                //         refreshResults();
+                //     })
             });
+
+            // <requestNodesState>
+            // - Fetches the current status of all nodes in the system.
+            // - Parameters: None
+            function refreshStatusNode() {
+                fetch('/get_status', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("node-status").style.display = 'block';
+                        document.querySelector('#node-status').innerHTML = JSON.stringify(data, null, 6)    // the json output is inside "data"
+                            .replace(/\n/g, "<br>");                                                        // data can be put in a return to reuse the function
+                        console.log('States:', data);
+                        return data;
+                        })
+            }
+
+            // <refreshResults>
+            // - Fetches the output from the last iteration of all nodes in the system
+            // - Parameters: None
+            function refreshResults() {
+                fetch('/get_results', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("framework-results").style.display = 'block';
+                        document.querySelector('#framework-results').innerHTML = JSON.stringify(data, null, 6)  // the json output is inside "data"
+                            .replace(/\n/g, "<br>");                                                            // data can be put in a return to reuse the function
+                        console.log('Results:', data);
+                        return data;
+                        })
+            }
+
+            document.getElementById('refresh-results').addEventListener('click', function () {
+                refreshResults();
+            });
+
+            // <specificResults>
+            // - Fetches the output from specific node in the system of a specific iteration
+            // - Parameters: node, problem_id, iteration_id
+            function specificResults(node, problem_id, iteration_id) {
+                fetch('/get_results', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "node_id": node,                    // Possible node values [ALL, APP_REQUIREMENTS, CARBON_FOOTPRINT, HW_CONSTRAINTS, HW_RESOURCES, ML_MODEL_METADATA, ML_MODEL, ORCHESTRATOR]
+                        "task_id": {                        //  ORCHESTRATOR gives the user_input
+                            "problem_id": problem_id,
+                            "iteration_id": iteration_id
+                        }
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("framework-results").style.display = 'block';
+                        document.querySelector('#framework-results').innerHTML = JSON.stringify(data, null, 6)  // the json output is inside "data"
+                            .replace(/\n/g, "<br>");                                                            // data can be put in a return to reuse the function
+                        console.log('Results:', data);
+                        return data;
+                        })
+            }
+
+            document.getElementById('refresh-results-specific').addEventListener('change', function () {
+                specificResults(this.value, 1, 1);      // Example of specific result (use node_name indicated previously, and problem_id and iteration_id ints bigger than 0)
+            });
+
+            document.getElementById('request-datas').addEventListener('change', function () {
+                switch (this.value) {
+                    case "Modalities":
+                        refreshModalities();
+                        break;
+                    case "Problems_from_modality":
+                        refreshProblemsFromModality("audio");               // Example of modality (one of the modalities received)
+                        break;
+                    case "Model_info":
+                        refreshModelInfo("facebook/opt-125m");              // Example of model (one of the model received)
+                        break;
+                    case "Input_output_modalities":
+                        refreshInputOutputModalities();
+                        break;
+                    case "Metrics_from_modalities":
+                        refreshMetricsFromModalities("Image", "Label");     // Example of modalities (Input modality, Output modality)
+                        break;
+                    case "Metrics_from_problem":
+                        refreshMetricsFromProblem("audio-text-to-text");    // Example of problem (one of the problem received)
+                        break;
+                    case "All_metrics":
+                        refreshAllMetrics();
+                        break;
+                    case "Hardwares":
+                        refreshHardwares();
+                        break;
+                    default:
+                        console.log("Option not supported:", this.value);
+                }
+            });
+
+            // <refreshModalities>
+            // - Return all the possible modalities (cover_tags) supported by DFKI
+            // - Parameters: None
+            function refreshModalities() {
+                fetch('/get_modality', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain modalities
+                        console.log('Modalities data:', data);      // the json output is inside "data"
+                        return data;                                // data can be put in a return to reuse the function
+                    })
+            }
+
+            // <refreshProblemsFromModality>
+            // - Return all possible problems for a modality(cover_tag)
+            // - Parameters: modality(cover_tag)
+            function refreshProblemsFromModality(modality) {
+                fetch('/get_problem_from_modality', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "modality": modality
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain problem types depending on the modality
+                        console.log('Problem data:', data);                                         // the json output is inside "data"
+                        return data;                                                                // data can be put in a return to reuse the function
+                    })
+            }
+
+            // <refreshModelInfo>
+            // - Return all information available from DFKI about a model
+            // - Parameters: model_name
+            function refreshModelInfo(model_name) {
+                fetch('/get_model_info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "model": model_name
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain all info from a model
+                        console.log('Model info:', data);                       // the json output is inside "data"
+                        return data;                                            // data can be put in a return to reuse the function
+                    })
+            }
+
+            // <refreshInputOutputModalities>
+            // - Return all possible input and output modalities
+            // - Parameters: None
+            function refreshInputOutputModalities() {
+                fetch('/get_inout_modalities', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain modalities
+                        console.log('Inputs & Output Modalities data:', data);  // the json output is inside "data"
+                        return data;                                            // data can be put in a return to reuse the function
+                    })
+            }
+
+            // <refreshMetricsFromModalities>
+            // - Return all possible metrics related to the input and output modalities
+            // - Parameters: input_modality, output_modality
+            function refreshMetricsFromModalities(input_modality, output_modality) {
+                fetch('/get_metrics_from_modalities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "modalities": input_modality + ", " + output_modality
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain modalities
+                        console.log('Metrics data:', data);         // the json output is inside "data"
+                        return data;                                // data can be put in a return to reuse the function
+
+                    })
+            }
+
+            // <refreshMetricsFromProblem>
+            // - Return all possible metrics related to a problem
+            // - Parameters: problem
+            function refreshMetricsFromProblem(problem) {
+                fetch('/get_metrics_from_problem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "problem": problem
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain modalities
+                        console.log('Metrics data:', data);         // the json output is inside "data"
+                        return data;                                // data can be put in a return to reuse the function
+                    })
+            }
+
+            // <refreshAllMetrics>
+            // - Return all possible metrics
+            // - Parameters: None
+            function refreshAllMetrics() {
+                fetch('/get_all_metrics', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain modalities
+                        console.log('Metrics data:', data);         // the json output is inside "data"
+                        return data;                                // data can be put in a return to reuse the function
+                    })
+            }
+
+            // <refreshHardwares>
+            // - Return all possible hardwares supported by upmem
+            // - Parameters: None
+            function refreshHardwares() {
+                fetch('/get_hardware', { method: 'GET' })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Example to see how to obtain modalities
+                        console.log('Hardware data:', data);        // the json output is inside "data"
+                        return data;                                // data can be put in a return to reuse the function
+                    })
+            }
+
         });
 
     </script>
