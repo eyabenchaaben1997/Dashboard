@@ -42,143 +42,52 @@ if kaggle_available:
     kaggle_api = KaggleApi()
     kaggle_api.authenticate()
 
-@app.route('/search_datasets', methods=['POST'])
-def search_datasets():
-    data = request.json
-    modality = data.get('modality')
-    if not modality:
-        return jsonify({'error': 'No modality provided'}), 400
+# @app.route('/search_datasets', methods=['POST'])  #Previous function for searching datasets
+# def search_datasets():
+#     data = request.json
+#     modality = data.get('modality')
+#     if not modality:
+#         return jsonify({'error': 'No modality provided'}), 400
 
-    # Map modality to search terms
-    modality_mapping = {
-        'image_video': 'images OR videos',
-        'text': 'text data OR NLP',
-        'sensor': 'sensor data OR IoT',
-        'audio': 'audio data OR sound',
-    }
+#     # Map modality to search terms
+#     modality_mapping = {
+#         'image_video': 'images OR videos',
+#         'text': 'text data OR NLP',
+#         'sensor': 'sensor data OR IoT',
+#         'audio': 'audio data OR sound',
+#     }
 
-    search_term = modality_mapping.get(modality, '')
-    if not search_term:
-        return jsonify({'error': 'Invalid modality'}), 400
+#     search_term = modality_mapping.get(modality, '')
+#     if not search_term:
+#         return jsonify({'error': 'Invalid modality'}), 400
 
-    if kaggle_available:
-        try:
-            datasets = kaggle_api.dataset_list(search=search_term, page_size=10)
-            datasets_info = []
-            for dataset in datasets:
-                datasets_info.append({
-                    'title': dataset.title,
-                    'url': f'https://www.kaggle.com/datasets/{dataset.ref}',
-                    'description': dataset.subtitle,
-                    'downloads': dataset.downloadCount,
-                    'size': f'{dataset.totalBytes // (1024 * 1024)} MB',
-                })
-            return jsonify({'datasets': datasets_info})
-        except Exception as e:
-            print(f"Error searching datasets: {e}")
-            return jsonify({'error': 'Failed to fetch datasets'}), 500
-    else:
-        return jsonify({'error': 'kaggle is not available'}), 500
+#     if kaggle_available:
+#         try:
+#             datasets = kaggle_api.dataset_list(search=search_term, page_size=10)
+#             datasets_info = []
+#             for dataset in datasets:
+#                 datasets_info.append({
+#                     'title': dataset.title,
+#                     'url': f'https://www.kaggle.com/datasets/{dataset.ref}',
+#                     'description': dataset.subtitle,
+#                     'downloads': dataset.downloadCount,
+#                     'size': f'{dataset.totalBytes // (1024 * 1024)} MB',
+#                 })
+#             return jsonify({'datasets': datasets_info})
+#         except Exception as e:
+#             print(f"Error searching datasets: {e}")
+#             return jsonify({'error': 'Failed to fetch datasets'}), 500
+#     else:
+#         return jsonify({'error': 'kaggle is not available'}), 500
 
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
-
-@app.route('/logo.png')
-def logo():
-    return send_from_directory('.', 'logo.png')
-
-@app.route('/arrow.png')
-def arrow():
-    return send_from_directory('.', 'arrow.png')
-
-def handle_nan_values(data):
-    # Replace NaN with None
-    return data.where(pd.notnull(data), None)
+    return send_from_directory('.', 'Updated_index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    global uploaded_data
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    try:
-        if file.filename.endswith('.csv'):
-            df = pd.read_csv(file)
-        elif file.filename.endswith('.json'):
-            df = pd.read_json(file)
-        else:
-            return jsonify({"error": "Invalid file type. Please upload a CSV or JSON file."}), 400
-
-        uploaded_data = df  # Save uploaded data globally
-
-        first_five_rows = handle_nan_values(df.head()).to_dict(orient='records')
-        empty_values_count = df.isnull().sum().sum()
-
-        return jsonify({
-            "first_five_rows": first_five_rows,
-            "empty_values_count": int(empty_values_count)
-        })
-    except Exception as e:
-        print(e)
-        return jsonify({"error": "Error processing file."}), 500
-
-@app.route('/data-info', methods=['GET'])
-def data_info():
-    global uploaded_data
-    if uploaded_data is None:
-        return jsonify({"error": "No data uploaded"}), 400
-
-    try:
-        data_size = uploaded_data.shape[0]
-        num_features = uploaded_data.shape[1]
-        empty_values = uploaded_data.isnull().sum().sum()
-
-        return jsonify({
-            "size": data_size,
-            "features": num_features,
-            "empty_values": int(empty_values)
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route('/count-empty-values', methods=['POST'])
-def count_empty_values():
-    global uploaded_data
-    if uploaded_data is None:
-        return jsonify({'error': 'No data uploaded'})
-
-    selected_columns = request.json.get('selectedColumns', [])
-    if not selected_columns:
-        return jsonify({'error': 'No columns selected'})
-
-    selected_data = uploaded_data[selected_columns]
-    empty_values_count = selected_data.isnull().sum().sum()
-
-    return jsonify({'empty_values_count': int(empty_values_count)})
-
-@app.route('/remove-empty', methods=['POST'])
-def remove_empty():
-    global uploaded_data
-    if uploaded_data is None:
-        return jsonify({"error": "No data uploaded"}), 400
-
-    try:
-        original_size = uploaded_data.shape[0]
-        df_cleaned = uploaded_data.dropna()
-        new_size = df_cleaned.shape[0]
-
-        return jsonify({
-            "original_size": original_size,
-            "new_size": new_size
-        })
-    except Exception as e:
-        print(e)
-        return jsonify({"error": "Error processing data."}), 500
+    # TODO: Implement dataset upload as a path to the backend
 
 @app.route('/get_geolocation', methods=['GET'])
 def get_geolocation():
@@ -252,7 +161,6 @@ def get_modality():
     try:
         data = {
             "node_id": 4,
-            "transaction_id": 0,
             "configuration": "modality"
         }
         # pipe the information to the backend
@@ -277,7 +185,6 @@ def get_problem_from_modality():
         req_type_values = in_data.get('modality')
         data = {
             "node_id": 4,
-            "transaction_id": 3,
             "configuration": "problem_from_modality, " + req_type_values
         }
         # pipe the information to the backend
@@ -301,7 +208,6 @@ def get_model_info():
         req_type_values = in_data.get('model')
         data = {
             "node_id": 4,
-            "transaction_id": 4,
             "configuration": "mode_info, " + req_type_values
         }
         # pipe the information to the backend
@@ -331,7 +237,6 @@ def get_inout_modalities():
     try:
         data = {
             "node_id": 4,
-            "transaction_id": 5,
             "configuration": "in_out_modalities"
         }
         # pipe the information to the backend
@@ -356,7 +261,6 @@ def get_metrics_from_modalities():
         req_type_values = in_data.get('modalities')
         data = {
             "node_id": 4,
-            "transaction_id": 2,
             "configuration": (
                 "metrics, " + "modality" + ": " + req_type_values
             )    # Example of req_type_values (Input modality, output modality): "Image, Label"
@@ -382,7 +286,6 @@ def get_metrics_from_problem():
         req_type_values = in_data.get('problem')
         data = {
             "node_id": 4,
-            "transaction_id": 2,
             "configuration": (
                 "metrics, " + "problem" + ": " + req_type_values
             )    # Example of req_type_values (goal): "audio-text-to-text"
@@ -406,7 +309,6 @@ def get_all_metrics():
     try:
         data = {
             "node_id": 4,
-            "transaction_id": 2,
             "configuration": (
                 "metrics, " + "all" + ": "
             )
@@ -430,7 +332,6 @@ def get_hardware():
     try:
         data = {
             "node_id": 3,
-            "transaction_id": 0,
             "configuration": "hardwares"
         }
         # pipe the information to the backend
