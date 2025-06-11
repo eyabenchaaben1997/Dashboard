@@ -88,6 +88,7 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     # TODO: Implement dataset upload as a path to the backend
+    return jsonify({'message': 'Upload endpoint is not implemented yet.'}), 501
 
 @app.route('/get_geolocation', methods=['GET'])
 def get_geolocation():
