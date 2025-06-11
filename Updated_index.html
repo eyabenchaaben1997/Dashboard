@@ -496,6 +496,14 @@
         Suggest Model
       </button>
     </div>
+    <!-- New Submit Problem button below the original suggestion -->
+    <div class="suggest-box">
+      <strong> Submit Problem</strong>
+      <p style="margin: 5px 0 10px; font-size: 14px;">Click to submit your problem after filling all the information.</p>
+      <button onclick="submitProblem()" class="suggest-button">
+        Submit Problem
+      </button>
+    </div>
 
 </div>
     <div class="middle-grid">
@@ -657,65 +665,65 @@
     });
 
 
-      function updateTaskOptions() {
+    function updateTaskOptions() {
         const domain = document.getElementById("problem-domain").value;
         const taskSelect = document.getElementById("task");
         taskSelect.innerHTML = "";
 
         if (domain && taskMapping[domain]) {
-          taskMapping[domain].forEach(task => {
+            taskMapping[domain].forEach(task => {
             const option = document.createElement("option");
             option.value = task;
             option.textContent = task;
             taskSelect.appendChild(option);
-          });
+            });
         } else {
-          const option = document.createElement("option");
-          option.value = "";
-          option.textContent = "Select task...";
-          taskSelect.appendChild(option);
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Select task...";
+            taskSelect.appendChild(option);
         }
-      }
-      document.getElementById("runtime").addEventListener("change", function () {
-          const show = this.value === "yes";
-          document.getElementById("runtimeDetails").style.display = show ? "block" : "none";
-        });
+    }
+    document.getElementById("runtime").addEventListener("change", function () {
+        const show = this.value === "yes";
+        document.getElementById("runtimeDetails").style.display = show ? "block" : "none";
+    });
 
-        document.getElementById("resources").addEventListener("change", function () {
-          const show = this.value === "yes";
-          document.getElementById("resourcesDetails").style.display = show ? "block" : "none";
-        });
+    document.getElementById("resources").addEventListener("change", function () {
+        const show = this.value === "yes";
+        document.getElementById("resourcesDetails").style.display = show ? "block" : "none";
+    });
 
-  const selectedColumns = {};
+    const selectedColumns = {};
 
-  function estimateEnergyForData(rows) {
-    if (!rows.length) return 0;
-    const numRows = rows.length;
-    const numCols = rows[0].length;
-    return ((numRows * numCols) / 1000).toFixed(2); // very basic estimate
-  }
+    function estimateEnergyForData(rows) {
+        if (!rows.length) return 0;
+        const numRows = rows.length;
+        const numCols = rows[0].length;
+        return ((numRows * numCols) / 1000).toFixed(2); // very basic estimate
+    }
 
-  function estimateEnergyForHardware(hardware) {
-    const base = {
-      cpu: 50,
-      gpu: 100,
-      tpu: 120,
-      edge: 20,
-      unknown: 70
-    };
-    return base[hardware] || 70;
-  }
+    function estimateEnergyForHardware(hardware) {
+        const base = {
+        cpu: 50,
+        gpu: 100,
+        tpu: 120,
+        edge: 20,
+        unknown: 70
+        };
+        return base[hardware] || 70;
+    }
 
-  function estimateEnergyForTask(task) {
-    const taskEnergy = {
-      "text-classification": 20,
-      "translation": 40,
-      "text-generation": 80,
-      "image-classification": 60,
-      "automatic-speech-recognition": 100
-    };
-    return taskEnergy[task] || 30;
-  }
+    function estimateEnergyForTask(task) {
+        const taskEnergy = {
+            "text-classification": 20,
+            "translation": 40,
+            "text-generation": 80,
+            "image-classification": 60,
+            "automatic-speech-recognition": 100
+        };
+        return taskEnergy[task] || 30;
+    }
 
     document.getElementById("fileUpload").addEventListener("change", function(e) {
       const file = e.target.files[0];
@@ -837,110 +845,451 @@
       document.getElementById("energyTask").innerText = estimateEnergyForTask(task) + " Wh";
     });
 
-     async function fetchModels() {
-  const task = document.getElementById("task").value;
-  const framework = document.getElementById("framework").value;
-  const language = document.getElementById("language").value;
-  const searchKeyword = document.getElementById("search").value.toLowerCase();
+    async function fetchModels() {
+        const task = document.getElementById("task").value;
+        const framework = document.getElementById("framework").value;
+        const language = document.getElementById("language").value;
+        const searchKeyword = document.getElementById("search").value.toLowerCase();
 
-  // Hide the input grids
-  document.querySelector(".top-zone").style.display = "none";
-  document.querySelector(".middle-grid").style.display = "none";
+        // Hide the input grids
+        document.querySelector(".top-zone").style.display = "none";
+        document.querySelector(".middle-grid").style.display = "none";
 
-  // Build API URL
-  let url = `https://huggingface.co/api/models?limit=1000`;
-  if (task) url += `&pipeline_tag=${task}`;
-  if (framework) url += `&framework=${framework}`;
-  if (language) url += `&language=${language}`;
+        // Build API URL
+        let url = `https://huggingface.co/api/models?limit=1000`;
+        if (task) url += `&pipeline_tag=${task}`;
+        if (framework) url += `&framework=${framework}`;
+        if (language) url += `&language=${language}`;
 
-  const carbonEstimates = {
-    "bert-base-uncased": 650,
-    "gpt2": 1850,
-    "gpt2-large": 2500,
-    "gpt2-xl": 3500,
-    "t5-11b": 120000,
-    "distilbert-base-uncased": 60,
-    "bigscience/bloom": 50000,
-    "facebook/wav2vec2-large-960h": 1250,
-    "google/mobilebert-uncased": 40,
-    "resnet-50": 450
-  };
+        const carbonEstimates = {
+            "bert-base-uncased": 650,
+            "gpt2": 1850,
+            "gpt2-large": 2500,
+            "gpt2-xl": 3500,
+            "t5-11b": 120000,
+            "distilbert-base-uncased": 60,
+            "bigscience/bloom": 50000,
+            "facebook/wav2vec2-large-960h": 1250,
+            "google/mobilebert-uncased": 40,
+            "resnet-50": 450
+        };
 
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
 
-    const filtered = data.filter(model => {
-      const id = model.id.toLowerCase();
-      const tags = (model.tags || []).map(t => t.toLowerCase());
-      return (
-        !searchKeyword ||
-        id.includes(searchKeyword) ||
-        tags.some(t => t.includes(searchKeyword))
-      );
-    });
+            const filtered = data.filter(model => {
+            const id = model.id.toLowerCase();
+            const tags = (model.tags || []).map(t => t.toLowerCase());
+            return (
+                !searchKeyword ||
+                id.includes(searchKeyword) ||
+                tags.some(t => t.includes(searchKeyword))
+            );
+            });
 
-    const enriched = filtered.map(model => {
-      const id = model.id.toLowerCase();
-      const carbon =
-        carbonEstimates[id] ??
-        (model.modelSize ? model.modelSize * 1.25 : 900 + Math.random() * 100);
+            const enriched = filtered.map(model => {
+                const id = model.id.toLowerCase();
+                const carbon =
+                    carbonEstimates[id] ??
+                    (model.modelSize ? model.modelSize * 1.25 : 900 + Math.random() * 100);
 
-      return {
-        ...model,
-        carbon: parseFloat(carbon.toFixed(1)),
-        likes: model.likes ?? Math.floor(Math.random() * 100),
-        size: model.modelSize ?? 500 + Math.random() * 100,
-        randomBoost: Math.random()
-      };
-    });
+                return {
+                    ...model,
+                    carbon: parseFloat(carbon.toFixed(1)),
+                    likes: model.likes ?? Math.floor(Math.random() * 100),
+                    size: model.modelSize ?? 500 + Math.random() * 100,
+                    randomBoost: Math.random()
+                };
+            });
 
-    const sorted = enriched.sort((a, b) => {
-      return a.carbon - b.carbon || b.likes - a.likes || b.randomBoost - a.randomBoost;
-    });
+            const sorted = enriched.sort((a, b) => {
+                return a.carbon - b.carbon || b.likes - a.likes || b.randomBoost - a.randomBoost;
+            });
 
-    const topModels = sorted.slice(0, 3);
+            const topModels = sorted.slice(0, 3);
 
-    const modelGrid = document.createElement("div");
-    modelGrid.className = "model-card-container";
+            const modelGrid = document.createElement("div");
+            modelGrid.className = "model-card-container";
 
-    for (const model of topModels) {
-      const modelInfoRes = await fetch(`https://huggingface.co/api/models/${model.id}`);
-      const modelInfo = await modelInfoRes.json();
+            for (const model of topModels) {
+                const modelInfoRes = await fetch(`https://huggingface.co/api/models/${model.id}`);
+                const modelInfo = await modelInfoRes.json();
 
-      const summary = modelInfo.cardData?.summary || "No description available.";
-      const license = modelInfo.license || "—";
-      const downloads = modelInfo.downloads || "—";
-      const params = modelInfo.cardData?.params || "—";
+                const summary = modelInfo.cardData?.summary || "No description available.";
+                const license = modelInfo.license || "—";
+                const downloads = modelInfo.downloads || "—";
+                const params = modelInfo.cardData?.params || "—";
 
-      const card = document.createElement("div");
-      card.className = "model-card";
-      card.innerHTML = `
-        <h3>${model.id}</h3>
-        <p style="font-size: 14px; color: #333;"><strong>Tags:</strong> ${(model.tags || []).join(', ')}</p>
-        <p style="font-size: 14px;"><strong>Description:</strong><br>${summary}</p>
-        <p style="font-size: 14px;"><strong>License:</strong> ${license}</p>
-        <p style="font-size: 14px;"><strong>Downloads:</strong> ${downloads.toLocaleString()}</p>
-        <p style="font-size: 14px;"><strong>Parameters:</strong> ${params}</p>
-        <a href="https://huggingface.co/${model.id}" target="_blank" style="color: #1a73e8; font-weight: bold;">
-          Open on Hugging Face ↗
-        </a>
-        <br><br>
-        <span class="badge">CO₂: ${model.carbon.toLocaleString()} kg</span>
-        <span class="badge">Size: ${Math.round(model.size)} MB</span>
-        <span class="badge">Likes: ${model.likes}</span>
-      `;
-      modelGrid.appendChild(card);
+                const card = document.createElement("div");
+                card.className = "model-card";
+                card.innerHTML = `
+                    <h3>${model.id}</h3>
+                    <p style="font-size: 14px; color: #333;"><strong>Tags:</strong> ${(model.tags || []).join(', ')}</p>
+                    <p style="font-size: 14px;"><strong>Description:</strong><br>${summary}</p>
+                    <p style="font-size: 14px;"><strong>License:</strong> ${license}</p>
+                    <p style="font-size: 14px;"><strong>Downloads:</strong> ${downloads.toLocaleString()}</p>
+                    <p style="font-size: 14px;"><strong>Parameters:</strong> ${params}</p>
+                    <a href="https://huggingface.co/${model.id}" target="_blank" style="color: #1a73e8; font-weight: bold;">
+                    Open on Hugging Face ↗
+                    </a>
+                    <br><br>
+                    <span class="badge">CO₂: ${model.carbon.toLocaleString()} kg</span>
+                    <span class="badge">Size: ${Math.round(model.size)} MB</span>
+                    <span class="badge">Likes: ${model.likes}</span>
+                `;
+                modelGrid.appendChild(card);
+            }
+
+            document.querySelector(".main-grid").prepend(modelGrid);
+
+        } catch (err) {
+            const fallback = document.createElement("div");
+            fallback.innerHTML = `<p>Error loading models: ${err.message}</p>`;
+            document.querySelector(".main-grid").prepend(fallback);
+        }
     }
 
-    document.querySelector(".main-grid").prepend(modelGrid);
+    // Backend communication.
+    // TODO: Change to adapt to the new frontend
 
-  } catch (err) {
-    const fallback = document.createElement("div");
-    fallback.innerHTML = `<p>Error loading models: ${err.message}</p>`;
-    document.querySelector(".main-grid").prepend(fallback);
-  }
-}
+    async function submitProblem() {
+        // Get input data
+        const task = document.getElementById("task").value;
+        const framework = document.getElementById("framework").value;
+        const language = document.getElementById("language").value;
+        const searchKeyword = document.getElementById("search").value.toLowerCase();
+        const geolocation = document.getElementById("geo").value;
+        const hardwareVal = document.getElementById("hardware").value;
+        const environmentVal = document.getElementById("environment").value;
+        const runtimeVal = document.getElementById("runtime").value;
+        const runtimeDetails = document.getElementById("runtimeDetails").value;
+        const resourcesVal = document.getElementById("resources").value;
+        const resourcesDetails = document.getElementById("resourcesDetails").value;
+        const cloudServicesVal = document.getElementById("cloudServices").value;
+        const problemDomain = document.getElementById("problem-domain").value;
+        const modality_value = document.getElementById("Data modality").value;
+        const input = document.getElementById("input-type").value
+        const output = document.getElementById("output-type").value
+
+        // Hide the input grids
+        document.querySelector(".top-zone").style.display = "none";
+        document.querySelector(".middle-grid").style.display = "none";
+
+        // Fill backend input format
+        const problem_short_description =
+          (task ? `User requests a ${task} task ` : "") +
+          (problemDomain ? `in the ${problemDomain} domain ` : "") +
+          (framework ? `using ${framework} ` : "") +
+          (language ? `and ${language}` : "").trim();
+        const modality = modality_value || "";
+        const problem_definition =
+          (task ? `This problem involves ${task} ` : "") +
+          (modality ? `on ${modality} data ` : "") +
+          (problemDomain ? `within ${problemDomain}.` : "").trim();
+        const ins = input ? [input] : [];
+        const outs = output ? [output] : [];
+        const min_value = 1;
+        const max_value = 1;
+        const optimize_carbon_footprint_auto = false;
+        const optimize_carbon_footprint_manual = false;
+        const previous_iteration = 0;
+        const desired_carbon_footprint = 0.0;
+        const geo_location_continent = geolocation || "";
+        const geo_location_region = "";
+        // const hardware_required = hardwareVal || "";
+        const hardware_required = "PIM-AI-1chip";
+        const max_memory_footprint = 0;
+        // const goal = task || "";
+        const goal = ""
+        const previous_problem_id = 0;
+        const num_outputs = 1;
+
+        try {
+
+            const response = await fetch('/send_pd', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "problem_short_description": problem_short_description,
+                    "modality": modality,
+                    "problem_definition": problem_definition,
+                    "inputs": ins,
+                    "outputs": outs,
+                    "minimum_samples": min_value,
+                    "maximum_samples": max_value,
+                    "optimize_carbon_footprint_auto": optimize_carbon_footprint_auto,
+                    "optimize_carbon_footprint_manual": optimize_carbon_footprint_manual,
+                    "previous_iteration": previous_iteration,
+                    "desired_carbon_footprint": desired_carbon_footprint,
+                    "geo_location_continent": geo_location_continent,
+                    "geo_location_region": geo_location_region,
+                    "extra_data": {
+                        "hardware_required": hardware_required,
+                        "max_memory_footprint": max_memory_footprint,
+                        "goal": goal,
+                        "previous_problem_id": previous_problem_id,
+                        "num_outputs": num_outputs
+                    }
+                })
+            });
+            const data = await response.json();
+            refreshStatusNode();
+            const results = await refreshResults();
+            console.log('Results: ', results);
+
+            const modelGrid = document.createElement("div");
+            modelGrid.className = "model-card-container";
+
+            const summary = results.cardData?.summary || "No description available.";
+            const license = results.license || "—";
+            const downloads = results.downloads || "—";
+            const params = results.cardData?.params || "—";
+            const model_id = results.ML_MODEL.model;
+            const model_tags = results.ML_MODEL_METADATA.tags;
+            const problem_id = results.ML_MODEL_METADATA.metadata;
+            const hw = results.HW_RESOURCES.hw_description;
+            const latency = results.HW_RESOURCES.latency;
+            const powerConsumption = results.HW_RESOURCES.power_consumption;
+            const carbonIntensity = results.CARBON_FOOTPRINT.carbon_intensity;
+            const energyConsumption = results.CARBON_FOOTPRINT.energy_consumption;
+
+            const card = document.createElement("div");
+            card.className = "model-card";
+            card.innerHTML = `
+                <h3>${model_id}</h3>
+                <p style="font-size: 14px;"><strong>Description:</strong><br>${summary}</p>
+                <p style="font-size: 14px;"><strong>License:</strong> ${license}</p>
+                <p style="font-size: 14px;"><strong>Downloads:</strong> ${downloads.toLocaleString()}</p>
+                <p style="font-size: 14px;"><strong>Parameters:</strong> ${params}</p>
+                <a href="https://huggingface.co/${model_id}" target="_blank" style="color: #1a73e8; font-weight: bold;">
+                Open on Hugging Face ↗
+                </a>
+                <br><br>
+                <span class="badge">Latency: ${latency} ms</span>
+                <span class="badge">Power: ${powerConsumption} W</span>
+                <span class="badge">CO₂: ${carbonIntensity} gCO₂/kW</span>
+                <span class="badge">Energy: ${energyConsumption} kWh</span>
+            `;
+            modelGrid.appendChild(card);
+
+
+            document.querySelector(".main-grid").prepend(modelGrid);
+
+        } catch (err) {
+            const fallback = document.createElement("div");
+            fallback.innerHTML = `<p>Error loading models: ${err.message}</p>`;
+            document.querySelector(".main-grid").prepend(fallback);
+        }
+    }
+
+    // <requestNodesState>
+    // - Fetches the current status of all nodes in the system.
+    // - Parameters: None
+    function refreshStatusNode() {
+        fetch('/get_status', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // the json output is inside "data"
+                // data can be put in a return to reuse the function
+                console.log('States:', data);
+                return data;
+                })
+    }
+
+    // <refreshResults>
+    // - Fetches the output from the last iteration of all nodes in the system
+    // - Parameters: None
+    async function refreshResults() {
+        const response = await fetch('/get_results', { method: 'GET' })
+        const data = await response.json();
+        return data;    // the json output is inside "data"
+    }
+
+    // <specificResults>
+    // - Fetches the output from specific node in the system of a specific iteration
+    // - Parameters: node, problem_id, iteration_id
+    function specificResults(node, problem_id, iteration_id) {
+        fetch('/get_results', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "node_id": node,                    // Possible node values [ALL, APP_REQUIREMENTS, CARBON_FOOTPRINT, HW_CONSTRAINTS, HW_RESOURCES, ML_MODEL_METADATA, ML_MODEL, ORCHESTRATOR]
+                "task_id": {                        //  ORCHESTRATOR gives the user_input
+                    "problem_id": problem_id,
+                    "iteration_id": iteration_id
+                }
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // the json output is inside "data"
+                // data can be put in a return to reuse the function
+                console.log('Results:', data);
+                return data;
+                })
+    }
+
+    // Rxamples of requests
+    // document.getElementById('request-datas').addEventListener('change', function () {
+    //     switch (this.value) {
+    //         case "Modalities":
+    //             refreshModalities();
+    //             break;
+    //         case "Problems_from_modality":
+    //             refreshProblemsFromModality("audio");               // Example of modality (one of the modalities received)
+    //             break;
+    //         case "Model_info":
+    //             refreshModelInfo("facebook/opt-125m");              // Example of model (one of the model received)
+    //             break;
+    //         case "Input_output_modalities":
+    //             refreshInputOutputModalities();
+    //             break;
+    //         case "Metrics_from_modalities":
+    //             refreshMetricsFromModalities("Image", "Label");     // Example of modalities (Input modality, Output modality)
+    //             break;
+    //         case "Metrics_from_problem":
+    //             refreshMetricsFromProblem("audio-text-to-text");    // Example of problem (one of the problem received)
+    //             break;
+    //         case "All_metrics":
+    //             refreshAllMetrics();
+    //             break;
+    //         case "Hardwares":
+    //             refreshHardwares();
+    //             break;
+    //         default:
+    //             console.log("Option not supported:", this.value);
+    //     }
+    // });
+
+    // <refreshModalities>
+    // - Return all the possible modalities (cover_tags) supported by DFKI
+    // - Parameters: None
+    function refreshModalities() {
+        fetch('/get_modality', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Modalities data:', data);      // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshProblemsFromModality>
+    // - Return all possible problems for a modality(cover_tag)
+    // - Parameters: modality(cover_tag)
+    function refreshProblemsFromModality(modality) {
+        fetch('/get_problem_from_modality', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "modality": modality
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain problem types depending on the modality
+                console.log('Problem data:', data);                                         // the json output is inside "data"
+                return data;                                                                // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshModelInfo>
+    // - Return all information available from DFKI about a model
+    // - Parameters: model_name
+    function refreshModelInfo(model_name) {
+        fetch('/get_model_info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "model": model_name
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain all info from a model
+                console.log('Model info:', data);                       // the json output is inside "data"
+                return data;                                            // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshInputOutputModalities>
+    // - Return all possible input and output modalities
+    // - Parameters: None
+    function refreshInputOutputModalities() {
+        fetch('/get_inout_modalities', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Inputs & Output Modalities data:', data);  // the json output is inside "data"
+                return data;                                            // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshMetricsFromModalities>
+    // - Return all possible metrics related to the input and output modalities
+    // - Parameters: input_modality, output_modality
+    function refreshMetricsFromModalities(input_modality, output_modality) {
+        fetch('/get_metrics_from_modalities', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "modalities": input_modality + ", " + output_modality
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Metrics data:', data);         // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+
+            })
+    }
+
+    // <refreshMetricsFromProblem>
+    // - Return all possible metrics related to a problem
+    // - Parameters: problem
+    function refreshMetricsFromProblem(problem) {
+        fetch('/get_metrics_from_problem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "problem": problem
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Metrics data:', data);         // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshAllMetrics>
+    // - Return all possible metrics
+    // - Parameters: None
+    function refreshAllMetrics() {
+        fetch('/get_all_metrics', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Metrics data:', data);         // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
+
+    // <refreshHardwares>
+    // - Return all possible hardwares supported by upmem
+    // - Parameters: None
+    function refreshHardwares() {
+        fetch('/get_hardware', { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                // Example to see how to obtain modalities
+                console.log('Hardware data:', data);        // the json output is inside "data"
+                return data;                                // data can be put in a return to reuse the function
+            })
+    }
 
 </script>
 
